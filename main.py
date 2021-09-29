@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def _rand(p, a, b):
@@ -20,6 +21,20 @@ def _std(lst, m=None):
     for item in lst:
         result += (item**2 - m**2) * rate
     return np.sqrt(result)
+
+
+def _hist(x, n_bins=20):
+    n_bins = int(n_bins)
+    if type(x) != np.ndarray:
+        x = np.array(x)
+    x_min = np.amin(x)
+    x_range = np.amax(x) - x_min
+    bin_step = float(x_range) / n_bins
+    bins = [bin_step * i for i in range(n_bins+1)]
+    result = [0] * n_bins
+    for item in x:
+        result[int((item - x_min) / bin_step)-1] += 1
+    return bins, result
 
 
 def f1(lst):
@@ -49,14 +64,22 @@ def f2(lst):
 
 
 if __name__ == '__main__':
-    history = [13]
+    # 13, 73009, 63949
+    param_r0 = int(input(f"R0 parameter: "))
+    param_a = int(input(f"a parameter: "))
+    param_b = int(input(f"b parameter: "))
+    history = [param_r0]
     for i in range(100000):
-        history.append(_rand(history[i], 73009, 63949))
+        history.append(_rand(history[i], param_a, param_b))
     h_mean = _mean(history)
     h_std = _std(history, h_mean)
     h_max_seq_len = f1(history)
     h_min_seq_len = f2(history)
+    bins, hist = _hist(history)
     print(f"Expectation: {h_mean:.5f} (effective mean)")
     print(f"Standard deviation: {h_std:.5f} (corrected)")
     print(f"Maximum unique sequence length: {h_max_seq_len}")
     print(f"Minimum unique sequence length: {h_min_seq_len}")
+    plt.figure().add_subplot()
+    plt.gca().hist(bins[:-1], bins, weights=hist)
+    plt.show()
