@@ -30,10 +30,13 @@ def _hist(x, n_bins=20):
     x_min = np.amin(x)
     x_range = np.amax(x) - x_min
     bin_step = float(x_range) / n_bins
-    bins = [bin_step * i for i in range(n_bins+1)]
-    result = [0] * n_bins
-    for item in x:
-        result[int((item - x_min) / bin_step)-1] += 1
+    bins = [bin_step * i for i in range(n_bins + 1)]
+    if bin_step > 0:
+        result = [0] * n_bins
+        for item in x:
+            result[int((item - x_min) / bin_step)-1] += 1
+    else:
+        raise ZeroDivisionError
     return bins, result
 
 
@@ -68,6 +71,7 @@ if __name__ == '__main__':
     # 13, 73009, 63949
     # 13 500933 200569 410819
     param_r0 = int(input(f"R0 parameter: "))
+    print(f"(R * a) % b")
     param_a = int(input(f"a parameter: "))
     param_b = int(input(f"b parameter: "))
     history = [param_r0]
