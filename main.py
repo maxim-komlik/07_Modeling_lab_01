@@ -48,6 +48,7 @@ def f1(lst):
         break
         #if i >= len(lst) - max_seq_len:
         #    break
+        # 1 702551 958821
     return max_seq_len
 
 
@@ -65,6 +66,7 @@ def f2(lst):
 
 if __name__ == '__main__':
     # 13, 73009, 63949
+    # 13 500933 200569 410819
     param_r0 = int(input(f"R0 parameter: "))
     param_a = int(input(f"a parameter: "))
     param_b = int(input(f"b parameter: "))
